@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->id('id_noticia');
+            $table->id('noticiaID');
             $table->string('title', 200);
             $table->text('description');
             $table->integer('views')->default(0);
-            $table->unsignedBigInteger('id_category')->nullable();
+            $table->unsignedBigInteger('categoryID')->nullable();
             $table->string('matricula', 20)->nullable();
             $table->timestamps();
-            $table->foreign('id_category')->references('id_category')->on('categories')->onDelete('set null');
+            $table->foreign('categoryID')->references('categoryID')->on('categories')->onDelete('set null');
             $table->foreign('matricula')->references('matricula')->on('writers')->onDelete('set null');
         });
         

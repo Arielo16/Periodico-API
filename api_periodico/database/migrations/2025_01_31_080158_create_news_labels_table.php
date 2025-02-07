@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('news_labels', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_label');
-            $table->unsignedBigInteger('id_noticia');
-            $table->primary(['id_label', 'id_noticia']);
-            $table->foreign('id_label')->references('id_label')->on('labels')->onDelete('cascade');
-            $table->foreign('id_noticia')->references('id_noticia')->on('news')->onDelete('cascade');
+            $table->unsignedBigInteger('labelID');
+            $table->unsignedBigInteger('noticiaID');
+            $table->primary(['labelID', 'noticiaID']);
+            $table->foreign('labelID')->references('labelID')->on('labels')->onDelete('cascade');
+            $table->foreign('noticiaID')->references('noticiaID')->on('news')->onDelete('cascade');
         });
     }
 
