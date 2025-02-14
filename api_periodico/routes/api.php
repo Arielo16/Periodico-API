@@ -14,11 +14,11 @@ Route::get('writers/{id}', [WriterController::class, 'show']);
 Route::put('writers/{id}', [WriterController::class, 'update']);
 Route::delete('writers/{id}', [WriterController::class, 'destroy']);
 
-Route::get('users', [UserController::class, 'index']);
-Route::post('users', [UserController::class, 'store']);
-Route::get('users/{id}', [UserController::class, 'show']);
-Route::put('users/{id}', [UserController::class, 'update']);
-Route::delete('users/{id}', [UserController::class, 'destroy']);
+Route::get('get/users', [UserController::class, 'index']);
+Route::post('post/users', [UserController::class, 'store']);
+Route::get('get/users/{id}', [UserController::class, 'show']);
+Route::put('put/users/{id}', [UserController::class, 'update']);
+Route::delete('delete/users/{id}', [UserController::class, 'destroy']);
 
 Route::get('news-labels', [NewsLabelController::class, 'index']);
 Route::post('news-labels', [NewsLabelController::class, 'store']);
@@ -26,15 +26,15 @@ Route::get('news-labels/{id}', [NewsLabelController::class, 'show']);
 Route::put('news-labels/{id}', [NewsLabelController::class, 'update']);
 Route::delete('news-labels/{id}', [NewsLabelController::class, 'destroy']);
 
-Route::get('news', [NewsController::class, 'index']);
-Route::post('news', [NewsController::class, 'store']);
-Route::get('news/{id}', [NewsController::class, 'show']);
-Route::put('news/{id}', [NewsController::class, 'update']);
-Route::delete('news/{id}', [NewsController::class, 'destroy']);
+Route::get('get/news', [NewsController::class, 'index']);
+Route::post('post/news', [NewsController::class, 'store']);
+Route::get('get/news/{id}', [NewsController::class, 'show']);
+Route::put('put/news/{id}', [NewsController::class, 'update']);
+Route::delete('delete/news/{id}', [NewsController::class, 'destroy']);
 
 Route::get('labels', [LabelController::class, 'index']);
 Route::post('labels', [LabelController::class, 'store']);
-Route::get('labels/{id}', [LabelController::class, 'show']);
+Route::get('get/labels/{id}', [LabelController::class, 'show']);
 Route::put('labels/{id}', [LabelController::class, 'update']);
 Route::delete('labels/{id}', [LabelController::class, 'destroy']);
 
