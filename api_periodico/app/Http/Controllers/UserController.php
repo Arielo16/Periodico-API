@@ -2,80 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\UserRequest;
+use App\Core\UseCases\CreateUserUseCase;
+use App\Core\UseCases\DeleteUserUseCase;
+use App\Core\UseCases\GetAllUsersUseCase;
+use App\Core\UseCases\GetUserUseCase;
+use App\Core\UseCases\UpdateUserUseCase;
+use App\Core\UseCases\LoginUserUseCase;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        $users = User::all();
-        return response()->json($users);
+    private $createUserUseCase;
+    private $deleteUserUseCase;
+    private $getAllUsersUseCase;
+    private $getUserUseCase;
+    private $updateUserUseCase;
+    private $loginUserUseCase;
+
+    public function __construct(
+        CreateUserUseCase $createUserUseCase,
+        DeleteUserUseCase $deleteUserUseCase,
+        GetAllUsersUseCase $getAllUsersUseCase,
+        GetUserUseCase $getUserUseCase,
+        UpdateUserUseCase $updateUserUseCase,
+        LoginUserUseCase $loginUserUseCase
+    ) {
+        $this->createUserUseCase = $createUserUseCase;
+        $this->deleteUserUseCase = $deleteUserUseCase;
+        $this->getAllUsersUseCase = $getAllUsersUseCase;
+        $this->getUserUseCase = $getUserUseCase;
+        $this->updateUserUseCase = $updateUserUseCase;
+        $this->loginUserUseCase = $loginUserUseCase;
     }
 
-    public function store(Request $request)
+    public function index()
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+        return response()->json($this->getAllUsersUseCase->execute());
+    }
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
-
-        $user = User::create($request->all());
-        return response()->json(['success' => 'User created successfully', 'user' => $user], 201);
+    public function store(UserRequest $request)
+    {
+        return response()->json($this->createUserUseCase->execute($request->validated()), 201);
     }
 
     public function show($id)
     {
-        $user = User::find($id);
-
-        if (is_null($user)) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
-        return response()->json($user);
+        return response()->json($this->getUserUseCase->execute($id));
     }
 
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
-        $user = User::find($id);
-
-        if (is_null($user)) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'sometimes|required|string|min:8',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
-
-        if ($request->isDirty()) {
-            $user->update($request->all());
-            return response()->json(['success' => 'User updated successfully', 'user' => $user]);
-        }
-
-        return response()->json(['message' => 'No changes detected'], 200);
+        return response()->json($this->updateUserUseCase->execute($id, $request->validated()));
     }
 
     public function destroy($id)
     {
-        $user = User::find($id);
+        return response()->json($this->deleteUserUseCase->execute($id));
+    }
 
-        if (is_null($user)) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
-        $user->delete();
-        return response()->json(['success' => 'User deleted successfully']);
+    public function login(Request $request)
+    {
+        return response()->json($this->loginUserUseCase->execute($request->all()));
     }
 }
