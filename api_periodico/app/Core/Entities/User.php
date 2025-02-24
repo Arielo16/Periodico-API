@@ -2,6 +2,8 @@
 
 namespace App\Core\Entities;
 
+use Illuminate\Support\Facades\Hash;
+
 class User
 {
     private $id;
@@ -19,6 +21,7 @@ class User
     
     public static function create(array $data): self
     {
+        $data['password'] = Hash::make($data['password']);
         return new self(null, $data['name'], $data['email'], $data['password']);
     }
 
