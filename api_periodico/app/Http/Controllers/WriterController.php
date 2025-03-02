@@ -14,6 +14,7 @@ class WriterController extends Controller
         return response()->json($writers);
     }
 
+    
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
